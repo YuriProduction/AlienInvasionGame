@@ -15,6 +15,7 @@ class Settings:
         self.alien_speed = 3.0
         self.fleet_drop_speed = 10  # Величина снижения
         self.fleet_direction = 1
+        self.sound_channels = 2
 
 
 if __name__ == '__main__':

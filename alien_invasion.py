@@ -1,4 +1,5 @@
 import os, pygame, sys
+import time
 from time import sleep
 from settings import Settings
 from alien import Alien
@@ -7,6 +8,9 @@ from bullet import Bullet
 from button import Button
 from table import Table
 from game_stats import GameStats
+
+pygame.mixer.init()
+pygame.mixer.set_num_channels(Settings().sound_channels)
 
 
 class AlienInvasion:
@@ -107,6 +111,7 @@ class AlienInvasion:
         self.aliens.add(alien)
 
     def _fire_bullet(self):
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('Music/shoot.wav'))
         #  если пулек не больше, чем мы установили в настройках, то все ок!
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet()
@@ -176,6 +181,7 @@ class AlienInvasion:
         self._check_aliens_bottom()
 
     def run_game(self):
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('Music/Game.wav'))
         while True:
             self._check_events()
             if self.stats.game_active:
@@ -184,6 +190,8 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+            # else:
+            #     pygame.mixer.music.pause()
             self._update_screen()
 
 
