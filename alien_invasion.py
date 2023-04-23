@@ -1,5 +1,6 @@
 import os, pygame, sys
 import time
+from Pause import PauseButton
 from time import sleep
 from settings import Settings
 from alien import Alien
@@ -36,9 +37,11 @@ class AlienInvasion:
         self._create_fleet()
 
         # Button
-        self.play_button = Button("Play")
+        self.play_button = Button("Play", 200, 50)
         self.play_button.screen = self.screen
         self.play_button.draw_button()
+
+        self.pause_button = PauseButton()
 
         # Table
         self.number = 0
@@ -81,6 +84,10 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         if self.play_button.rect.collidepoint(mouse_pos):
             self.stats.game_active = True
+
+    def _check_pause_button(self, mouse_pos):
+        if self.pause_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = False
 
     def _check_keyup_events(self, event):
         # если отжали кнопку, то больше не двигаемся
@@ -132,6 +139,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_pause_button(mouse_pos)
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
@@ -139,6 +147,7 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        self.pause_button.draw(self.screen)
         if self.stats.game_active != True:
             self.play_button.draw_button()
         else:
