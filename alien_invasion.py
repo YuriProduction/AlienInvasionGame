@@ -1,14 +1,18 @@
-import os, pygame, sys
-import time
-from Pause import PauseButton
 from time import sleep
-from settings import Settings
-from alien import Alien
-from ship import Ship
-from bullet import Bullet
-from button import Button
-from table import Table
+import Models.ButtonToRecordFrame as recordsButton
+import OtherFrames.RecordFrame
+import pygame
+import sys
+import Serializeble.saver
+import Serializeble.loader
+from Models.Pause import PauseButton
+from Models.alien import Alien
+from Models.bullet import Bullet
+from Models.button import Button
 from game_stats import GameStats
+from settings import Settings
+from Models.ship import Ship
+from table import Table
 
 pygame.mixer.init()
 pygame.mixer.set_num_channels(Settings().sound_channels)
@@ -42,7 +46,9 @@ class AlienInvasion:
         self.play_button.draw_button()
 
         self.pause_button = PauseButton()
-
+        self.records_button = recordsButton.RecordButton()
+        # Array
+        self.records = []
         # Table
         self.number = 0
         self.table = Table(str(self.number))
@@ -89,6 +95,13 @@ class AlienInvasion:
         if self.pause_button.rect.collidepoint(mouse_pos):
             self.stats.game_active = False
 
+    def _check_records_button(self, mouse_pos):
+        if self.records_button.rect.collidepoint(mouse_pos):
+            self._showTheScreenOfRecords()
+
+    def _showTheScreenOfRecords(self):
+        OtherFrames.RecordFrame.show_record_table(self.records)
+
     def _check_keyup_events(self, event):
         # если отжали кнопку, то больше не двигаемся
         if event.key == pygame.K_RIGHT:
@@ -131,6 +144,8 @@ class AlienInvasion:
     def _check_events(self):
         for event in pygame.event.get():  # Отслеживание событий клавиатуры и мыши
             if event.type == pygame.QUIT:
+                if self.number != 0:
+                    Serializeble.saver.save_data(self.number)
                 sys.exit(0)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -140,6 +155,11 @@ class AlienInvasion:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
                 self._check_pause_button(mouse_pos)
+                self._check_records_button(mouse_pos)
+
+    def _update_records(self):
+        self.records = sorted(Serializeble.loader.load_data(), key=lambda x: x[1], reverse=True)
+        print(self.records)
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
@@ -148,6 +168,7 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         self.pause_button.draw(self.screen)
+        self.records_button.draw(self.screen)
         if self.stats.game_active != True:
             self.play_button.draw_button()
         else:
@@ -191,6 +212,7 @@ class AlienInvasion:
 
     def run_game(self):
         pygame.mixer.Channel(0).play(pygame.mixer.Sound('Music/Game.wav'))
+        self._update_records()
         while True:
             self._check_events()
             if self.stats.game_active:
