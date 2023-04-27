@@ -1,18 +1,20 @@
+import sys
 from time import sleep
+
+import pygame
+
 import Models.ButtonToRecordFrame as recordsButton
 import OtherFrames.RecordFrame
 import OtherFrames.textFielfForUserName
-import pygame
-import sys
-import Serializeble.saver
 import Serializeble.loader
+import Serializeble.saver
 from Models.Pause import PauseButton
 from Models.alien import Alien
 from Models.bullet import Bullet
 from Models.button import Button
+from Models.ship import Ship
 from game_stats import GameStats
 from settings import Settings
-from Models.ship import Ship
 from table import Table
 
 pygame.mixer.init()
@@ -111,6 +113,9 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _create_fleet(self):
+        self.settings.fleet_drop_speed += 5  # увеличиваем уровень сложности
+        self.settings.alien_speed += 1.0
+        self.settings.bullet_speed += 0.5
         alien = Alien()
         alien_width, alien_height = alien.rect.size
         avaliable_space_x = self.settings.screen_width - (2 * alien_width)
