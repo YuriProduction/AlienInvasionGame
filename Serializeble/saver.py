@@ -1,7 +1,6 @@
 from datetime import date
 
 
-def save_data(points: int):
+def save_data(points: int, username):
     with open('points.txt', 'a') as f:
-        current_date = date.today()
-        f.write(str(current_date) + " " + str(points) + "\n")
+        f.write(username + " " + str(points) + "\n")

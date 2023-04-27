@@ -1,6 +1,7 @@
 from time import sleep
 import Models.ButtonToRecordFrame as recordsButton
 import OtherFrames.RecordFrame
+import OtherFrames.textFielfForUserName
 import pygame
 import sys
 import Serializeble.saver
@@ -16,11 +17,11 @@ from table import Table
 
 pygame.mixer.init()
 pygame.mixer.set_num_channels(Settings().sound_channels)
+pygame.init()
 
 
 class AlienInvasion:
     def __init__(self):
-        pygame.init()
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
@@ -100,7 +101,7 @@ class AlienInvasion:
             self._showTheScreenOfRecords()
 
     def _showTheScreenOfRecords(self):
-        OtherFrames.RecordFrame.show_record_table(self.records)
+        OtherFrames.RecordFrame.show_record_table(self.screen, self.records)
 
     def _check_keyup_events(self, event):
         # если отжали кнопку, то больше не двигаемся
@@ -141,11 +142,11 @@ class AlienInvasion:
             new_bullet.y = new_bullet.rect.y
             self.bullets.add(new_bullet)
 
-    def _check_events(self):
+    def _check_events(self, username):
         for event in pygame.event.get():  # Отслеживание событий клавиатуры и мыши
             if event.type == pygame.QUIT:
                 if self.number != 0:
-                    Serializeble.saver.save_data(self.number)
+                    Serializeble.saver.save_data(self.number, username)
                 sys.exit(0)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -190,6 +191,7 @@ class AlienInvasion:
         if not self.aliens:  # new fleet if we have killed every ship
             self.bullets.empty()
             self._create_fleet()
+
         # self.number+=1
 
     def _check_fleet_edges(self):
@@ -211,10 +213,11 @@ class AlienInvasion:
         self._check_aliens_bottom()
 
     def run_game(self):
+        user_name = OtherFrames.textFielfForUserName.get_name()
         pygame.mixer.Channel(0).play(pygame.mixer.Sound('Music/Game.wav'))
         self._update_records()
         while True:
-            self._check_events()
+            self._check_events(user_name)
             if self.stats.game_active:
                 # во время игры
                 # постоянно обновляем расположения

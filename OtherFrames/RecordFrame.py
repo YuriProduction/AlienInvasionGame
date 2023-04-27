@@ -1,7 +1,7 @@
 import pygame
 
 
-def show_record_table(scores: list):
+def show_record_table(screen, scores: list):
     # Определение цветов
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -11,7 +11,6 @@ def show_record_table(scores: list):
 
     # Создание окна
     size = (700, 500)
-    screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Таблица рекордов")
 
     # Шрифты
@@ -57,6 +56,3 @@ def show_record_table(scores: list):
 
         # Обновление экрана
         pygame.display.flip()
-
-    # Завершение Pygame
-    pygame.quit()

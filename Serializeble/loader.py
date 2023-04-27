@@ -6,9 +6,9 @@ def load_data() -> list:
                 line = f.readline()
                 if not line:
                     break
+                username = line.split(" ")[0]
                 point = line.split(" ")[1]
-                time = line.split(" ")[0]
-                points.append((time, int(point)))
+                points.append((username, int(point)))
         return points
     except:
         return []

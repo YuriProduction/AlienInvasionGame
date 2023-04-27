@@ -1,6 +1,9 @@
-2023-04-24 13
-2023-04-24 13
-2023-04-24 18
-2023-04-24 3
-2023-04-26 54
-2023-04-26 18
+Jurex 54
+Seregex 18
+Anton 66
+Daniil 98
+Nikita 41
+Stepan 118
+Artur 185
+Serega 89
+Jurex 9
