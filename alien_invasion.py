@@ -21,6 +21,8 @@ from table import Table
 pygame.mixer.init()
 pygame.mixer.set_num_channels(Settings().sound_channels)
 pygame.init()
+back_music = pygame.mixer.Sound('Music/Game.wav')
+back_music.set_volume(0.15)
 
 
 class AlienInvasion:
@@ -175,6 +177,11 @@ class AlienInvasion:
         self.records_button.draw(self.screen)
         if self.stats.game_active != True:
             self.play_button.draw_button()
+            if self.stats.ships_count == 0:
+                back_music.stop()
+                ai = AlienInvasion()
+                ai.run_game()
+
         else:
             self.table.draw_button(str(self.number))
         pygame.display.flip()  # отображение последнего прорисованного экрана
@@ -217,8 +224,6 @@ class AlienInvasion:
 
     def run_game(self):
         user_name = OtherFrames.textFielfForUserName.get_name()
-        back_music = pygame.mixer.Sound('Music/Game.wav')
-        back_music.set_volume(0.15)
         pygame.mixer.Channel(0).play(back_music)
 
         self._update_records()

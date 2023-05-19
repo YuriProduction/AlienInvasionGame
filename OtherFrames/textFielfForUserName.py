@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from pygame.locals import *
 
 
@@ -31,7 +31,7 @@ def get_name() -> str:
     while running:
         for event in pygame.event.get():
             if event.type == QUIT:
-                running = False
+                sys.exit(0)
             elif event.type == KEYDOWN:
                 if event.key == K_BACKSPACE:
                     # Remove last character from input_text
@@ -39,6 +39,9 @@ def get_name() -> str:
                 else:
                     # Add pressed character to input_text
                     input_text += event.unicode
+            elif event.type == pygame.QUIT:
+                sys.exit(0)
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if button_rect.collidepoint(mouse_pos):

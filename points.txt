@@ -37,3 +37,6 @@ Jurex 115
 Jurex 133
 Jurex 108
 Jurex 112
+Jurex 34
+Jurex 23
+Jurex 2
