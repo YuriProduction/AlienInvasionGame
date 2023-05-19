@@ -5,16 +5,16 @@ class Settings:
         self.bg_color = (233, 233, 233)
         # Ship
         self.ship_limit = 3  # число уровней
-        self.ship_speed = 1.8
+        self.ship_speed = 1.9
         # ___bullet_settings_____________
-        self.bullet_speed = 1.5
+        self.bullet_speed = 1.7
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 6
         # Alien
         self.alien_speed = 3.0
-        self.fleet_drop_speed = 5  # Величина снижения
+        self.fleet_drop_speed = 4  # Величина снижения
         self.fleet_direction = 1
         self.sound_channels = 2
 

@@ -69,8 +69,6 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.rect.midbottom = self.screen_rect.midbottom
             self.ship.x = float(self.ship.rect.x)
-
-            sleep(0.5)
         else:
             self.stats.game_active = False
 
