@@ -33,8 +33,7 @@ class AlienInvasion:
         self.stats = GameStats()
         self.stats.game_active = False
         # Ship
-        self.ship = Ship()
-        self.ship.screen = self.screen  # Two dofferent screens
+        self.ship = Ship(self.screen)
         self.ship_height = 48
 
         # Bullets
@@ -89,6 +88,7 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             sys.exit(1)
         elif event.key == pygame.K_SPACE:
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('Music/SHOOT.wav'))
             self._fire_bullet()
 
     def _check_play_button(self, mouse_pos):
@@ -139,11 +139,9 @@ class AlienInvasion:
         self.aliens.add(alien)
 
     def _fire_bullet(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound('Music/shoot.wav'))
         #  если пулек не больше, чем мы установили в настройках, то все ок!
         if len(self.bullets) < self.settings.bullets_allowed:
-            new_bullet = Bullet()
-            new_bullet.screen = self.screen
+            new_bullet = Bullet(self.screen)
             # выравниваем пульку относительно корабля
             new_bullet.rect.midtop = self.ship.rect.midtop
             new_bullet.y = new_bullet.rect.y
@@ -221,7 +219,10 @@ class AlienInvasion:
 
     def run_game(self):
         user_name = OtherFrames.textFielfForUserName.get_name()
-        pygame.mixer.Channel(0).play(pygame.mixer.Sound('Music/Game.wav'))
+        back_music = pygame.mixer.Sound('Music/Game.wav')
+        back_music.set_volume(0.15)
+        pygame.mixer.Channel(0).play(back_music)
+
         self._update_records()
         while True:
             self._check_events(user_name)

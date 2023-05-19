@@ -4,10 +4,10 @@ from pygame.sprite import Sprite
 
 
 class Bullet(Sprite):
-    def __init__(self):
+    def __init__(self, screen):
         super().__init__()
         self.settings = Settings()
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.screen = screen
         self.color = self.settings.bullet_color
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
         self.rect.midtop = self.screen.get_rect().midtop
