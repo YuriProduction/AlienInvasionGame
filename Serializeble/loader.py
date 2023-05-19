@@ -1,5 +1,5 @@
 def load_data() -> list:
-    points = []
+    points = {}
     try:
         with open('points.txt', 'r') as f:
             while True:
@@ -7,8 +7,12 @@ def load_data() -> list:
                 if not line:
                     break
                 username = line.split(" ")[0]
-                point = line.split(" ")[1]
-                points.append((username, int(point)))
-        return points
+                point = int(line.split(" ")[1])
+                if username not in points:
+                    points[username] = point
+                else:
+                    if point > points[username]:
+                        points[username] = point
+        return list(points.items())
     except:
         return []

@@ -1,4 +1,5 @@
 import sys
+import threading
 from time import sleep
 
 import pygame
@@ -100,6 +101,7 @@ class AlienInvasion:
 
     def _check_records_button(self, mouse_pos):
         if self.records_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = False
             self._showTheScreenOfRecords()
 
     def _showTheScreenOfRecords(self):
@@ -224,16 +226,12 @@ class AlienInvasion:
         while True:
             self._check_events(user_name)
             if self.stats.game_active:
-                # во время игры
-                # постоянно обновляем расположения
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
-            # else:
-            #     pygame.mixer.music.pause()
             self._update_screen()
 
 
-if __name__ == '__main__':  # __name__ хранит в контексте какого файла он запускается, __main__ соответсвует текцщему файлу
+if __name__ == '__main__':
     ai = AlienInvasion()
     ai.run_game()
