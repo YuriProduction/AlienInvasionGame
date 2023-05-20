@@ -7,13 +7,11 @@ class Button:
         self.screen = pg.display.set_mode((1200, 800))
         self.screen_rect = self.screen.get_rect()
 
-        # features of button
         self.width, self.height = width, height
         self.button_color = (0, 255, 0)
         self.text_color = (255, 255, 255)
         self.font = pg.font.SysFont(None, 48)
 
-        # button as rect object
         self.rect = pg.Rect(0, 0, self.width, self.height)
 
         self.rect.center = self.screen_rect.center

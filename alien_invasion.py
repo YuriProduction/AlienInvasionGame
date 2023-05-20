@@ -26,40 +26,42 @@ back_music.set_volume(0.15)
 
 
 class AlienInvasion:
-    def __init__(self):
+    def _initialize_Settings_And_Screen(self):
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
         self.screen_rect = self.screen.get_rect()
-        # Statistic
-        self.stats = GameStats()
-        self.stats.game_active = False
-        # Ship
+
+    def _initialize_models(self):
         self.ship = Ship(self.screen)
         self.ship_height = 48
 
-        # Bullets
-        self.bullets = pygame.sprite.Group()  # типо списка в пайгейм, Group - это класс
+        self.bullets = pygame.sprite.Group()
 
-        # Alien
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
 
-        # Button
         self.play_button = Button("Play", 200, 50)
         self.play_button.screen = self.screen
         self.play_button.draw_button()
 
         self.pause_button = PauseButton()
         self.records_button = recordsButton.RecordButton()
-        # Array
+
+    def _initialize_statistics_and_Table(self):
+        self.stats = GameStats()
+        self.stats.game_active = False
         self.records = []
-        # Table
         self.number = 0
         self.table = Table(str(self.number))
         self.table.screen = self.screen
-        # .draw_button()
-        # self.table.change_numbers_and_draw_table(self.number)
+
+    def __init__(self):
+        self._initialize_Settings_And_Screen()
+
+        self._initialize_models()
+
+        self._initialize_statistics_and_Table()
 
     def _ship_hit(self):
         if self.stats.ships_count > 0:
@@ -108,14 +110,13 @@ class AlienInvasion:
         OtherFrames.RecordFrame.show_record_table(self.screen, self.records)
 
     def _check_keyup_events(self, event):
-        # если отжали кнопку, то больше не двигаемся
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
     def _create_fleet(self):
-        self.settings.fleet_drop_speed += 5  # увеличиваем уровень сложности
+        self.settings.fleet_drop_speed += 5
         self.settings.alien_speed += 1.0
         self.settings.bullet_speed += 0.5
         alien = Alien()
@@ -139,16 +140,14 @@ class AlienInvasion:
         self.aliens.add(alien)
 
     def _fire_bullet(self):
-        #  если пулек не больше, чем мы установили в настройках, то все ок!
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self.screen)
-            # выравниваем пульку относительно корабля
             new_bullet.rect.midtop = self.ship.rect.midtop
             new_bullet.y = new_bullet.rect.y
             self.bullets.add(new_bullet)
 
     def _check_events(self, username):
-        for event in pygame.event.get():  # Отслеживание событий клавиатуры и мыши
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 if self.number != 0:
                     Serializeble.saver.save_data(self.number, username)
@@ -184,7 +183,7 @@ class AlienInvasion:
 
         else:
             self.table.draw_button(str(self.number))
-        pygame.display.flip()  # отображение последнего прорисованного экрана
+        pygame.display.flip()
 
     def _update_bullets(self):
         self.bullets.update()
@@ -195,14 +194,12 @@ class AlienInvasion:
 
     def _check_alien_and_bullet_collision(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True,
-                                                True)  # False,True - не удаляем снаряды, но удаляем НЛО
+                                                True)
         if collisions:
             self.number += 1
-        if not self.aliens:  # new fleet if we have killed every ship
+        if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
-
-        # self.number+=1
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():

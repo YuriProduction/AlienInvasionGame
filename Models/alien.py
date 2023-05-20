@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 from settings import Settings
 from pygame.sprite import Sprite
 
@@ -10,13 +10,13 @@ class Alien(Sprite):
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.speed_of_aliens = self.settings.alien_speed
 
-        self.image = pygame.image.load('Images/NLO.png')
+        image_path = os.path.join("Images", "NLO.png")
+        self.image = pygame.image.load(image_path)
         self.rect = self.image.get_rect()
-        # print('Размер одного пришельца: ',f'[{self.rect.width}x{self.rect.height}]',end='\n')
 
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
-        self.x = float(self.rect.x)  # точный контроль горизонтальной скорости
+        self.x = float(self.rect.x)
 
     def check_edges(self, screen):
         screen_rect = screen.get_rect()

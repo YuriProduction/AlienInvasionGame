@@ -8,7 +8,6 @@ class PauseButton():
     def draw(self, screen):
         WHITE = (255, 255, 255)
         GREEN = (0, 255, 0)
-        # создаем кнопку
         pausebutton = pygame.Rect(10, 10, 30, 40)
         pygame.draw.rect(screen, GREEN, pausebutton)
         pygame.draw.line(screen, WHITE, (20, 20), (20, 40), 5)
