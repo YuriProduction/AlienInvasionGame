@@ -20,7 +20,7 @@ class Settings:
         self.table_width = 100
         self.table_height = 50
         self.table_button_color = (233, 233, 233)
-        self.table_text_color = (233, 233, 233)
+        self.table_text_color = (0, 0, 0)
         self.table_font_size = 48
 
 

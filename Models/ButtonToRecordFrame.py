@@ -1,11 +1,11 @@
 import pygame
+
 from settings import Settings
 
 
 class RecordButton():
     def __init__(self):
         self.settings = Settings()
-        window_width = self.settings.screen_width
         button_font = pygame.font.SysFont("Arial", self.settings.font_size)
         self.button_text = button_font.render("Таблица рекордов", True, (0, 0, 0))
         button_width = self.button_text.get_width()

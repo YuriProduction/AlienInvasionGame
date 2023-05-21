@@ -1,6 +1,4 @@
 import sys
-import threading
-from time import sleep
 
 import pygame
 
@@ -62,6 +60,8 @@ class AlienInvasion:
         self._initialize_models()
 
         self._initialize_statistics_and_Table()
+        self.table = Table(str(self.number))
+        self.table.screen = self.screen
 
     def _ship_hit(self):
         if self.stats.ships_count > 0:
@@ -174,6 +174,7 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         self.pause_button.draw(self.screen)
         self.records_button.draw(self.screen)
+
         if self.stats.game_active != True:
             self.play_button.draw_button()
             if self.stats.ships_count == 0:
