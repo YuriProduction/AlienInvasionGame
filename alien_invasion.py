@@ -3,6 +3,7 @@ import sys
 import pygame
 
 import Models.ButtonToRecordFrame as recordsButton
+import Models.MysteryShip
 import OtherFrames.RecordFrame
 import OtherFrames.textFielfForUserName
 import Serializeble.loader
@@ -130,6 +131,7 @@ class AlienInvasion:
         for row_number in range(number_rows):
             for alien_number in range(numbers_of_aliens):
                 self._create_alion(alien_number, row_number)
+        self.aliens.add(Models.MysteryShip.MysteryShip())
 
     def _create_alion(self, alien_number, number_rows):
         alien = Alien()
