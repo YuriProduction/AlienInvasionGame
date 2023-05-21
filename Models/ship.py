@@ -2,8 +2,11 @@ import pygame
 from settings import Settings
 
 
-class Ship:
-    def __init__(self, screen):
+class Ship(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+    def initialize(self, screen):
         pygame.init()
         self.settings = Settings()
         self.screen = screen

@@ -1,7 +1,7 @@
 import sys
 
 import pygame
-
+import random
 import Models.ButtonToRecordFrame as recordsButton
 import Models.MysteryShip
 import OtherFrames.RecordFrame
@@ -32,7 +32,8 @@ class AlienInvasion:
         self.screen_rect = self.screen.get_rect()
 
     def _initialize_models(self):
-        self.ship = Ship(self.screen)
+        self.ship = Ship()
+        self.ship.initialize(self.screen)
         self.ship_height = 48
 
         self.bullets = pygame.sprite.Group()
@@ -46,6 +47,8 @@ class AlienInvasion:
 
         self.pause_button = PauseButton()
         self.records_button = recordsButton.RecordButton()
+
+        self.mystery_ship = Models.MysteryShip.MysteryShip()
 
     def _initialize_statistics_and_Table(self):
         self.stats = GameStats()
@@ -61,8 +64,9 @@ class AlienInvasion:
         self._initialize_models()
 
         self._initialize_statistics_and_Table()
-        self.table = Table(str(self.number))
-        self.table.screen = self.screen
+        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(self.mystery_ship)
+        self.all_sprites.add(self.ship)
 
     def _ship_hit(self):
         if self.stats.ships_count > 0:
@@ -131,7 +135,6 @@ class AlienInvasion:
         for row_number in range(number_rows):
             for alien_number in range(numbers_of_aliens):
                 self._create_alion(alien_number, row_number)
-        self.aliens.add(Models.MysteryShip.MysteryShip())
 
     def _create_alion(self, alien_number, number_rows):
         alien = Alien()
@@ -203,6 +206,7 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.all_sprites.add(Models.MysteryShip.MysteryShip())
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
@@ -220,6 +224,14 @@ class AlienInvasion:
         self.aliens.update(self.settings.fleet_direction)
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self._ship_hit()
+
+        hits = pygame.sprite.spritecollide(self.mystery_ship, self.bullets, True)
+
+        if hits:
+            self.number += 5
+            self.mystery_ship.rect.x = random.randint(0, self.settings.screen_width - self.mystery_ship.rect.width)
+            self.mystery_ship.rect.y = -self.mystery_ship.rect.height
+
         self._check_aliens_bottom()
 
     def run_game(self):
@@ -230,9 +242,12 @@ class AlienInvasion:
         while True:
             self._check_events(user_name)
             if self.stats.game_active:
+                self.all_sprites.update()
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+                self.all_sprites.draw(self.screen)
+                pygame.display.flip()
             self._update_screen()
 
 
