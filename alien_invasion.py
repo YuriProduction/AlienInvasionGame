@@ -1,3 +1,4 @@
+import os.path
 import sys
 
 import pygame
@@ -20,7 +21,7 @@ from table import Table
 pygame.mixer.init()
 pygame.mixer.set_num_channels(Settings().sound_channels)
 pygame.init()
-back_music = pygame.mixer.Sound('Music/Game.wav')
+back_music = pygame.mixer.Sound(os.path.join('Music', 'Game.wav'))
 back_music.set_volume(0.15)
 
 
@@ -95,7 +96,7 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             sys.exit(1)
         elif event.key == pygame.K_SPACE:
-            pygame.mixer.Channel(1).play(pygame.mixer.Sound('Music/SHOOT.wav'))
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound(os.path.join('Music', 'SHOOT.wav')))
             self._fire_bullet()
 
     def _check_play_button(self, mouse_pos):
@@ -179,7 +180,7 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         self.pause_button.draw(self.screen)
         self.records_button.draw(self.screen)
-
+        self.all_sprites.draw(self.screen)
         if self.stats.game_active != True:
             self.play_button.draw_button()
             if self.stats.ships_count == 0:
