@@ -207,7 +207,8 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
-            self.all_sprites.add(Models.MysteryShip.MysteryShip())
+            self.mystery_ship = Models.MysteryShip.MysteryShip()
+            self.all_sprites.add(self.mystery_ship)
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
@@ -229,6 +230,7 @@ class AlienInvasion:
         hits = pygame.sprite.spritecollide(self.mystery_ship, self.bullets, True)
 
         if hits:
+            print('COLLIDE')
             self.number += 5
             self.mystery_ship.rect.x = random.randint(0, self.settings.screen_width - self.mystery_ship.rect.width)
             self.mystery_ship.rect.y = -self.mystery_ship.rect.height
