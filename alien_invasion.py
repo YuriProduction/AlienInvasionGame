@@ -5,8 +5,8 @@ import pygame
 from Models.bunker import Bunker
 import Models.Button_To_Record_Frame as recordsButton
 import Models.mystery_ship
-import OtherFrames.record_frame
-import OtherFrames.text_field_for_user_name
+import Other_Frames.record_frame
+import Other_Frames.text_field_for_user_name
 import Serializeble.loader
 import Serializeble.saver
 from Models.Pause import PauseButton
@@ -23,6 +23,7 @@ pygame.mixer.set_num_channels(Settings().sound_channels)
 pygame.init()
 back_music = pygame.mixer.Sound(os.path.join('Music', 'Game.wav'))
 back_music.set_volume(0.15)
+USERNAME = None
 
 
 class Alien_Invasion:
@@ -73,7 +74,6 @@ class Alien_Invasion:
     def _ship_hit(self):
         if self.stats.ships_count > 0:
             self.stats.ships_count -= 1
-
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
@@ -113,7 +113,7 @@ class Alien_Invasion:
             self._showTheScreenOfRecords()
 
     def _showTheScreenOfRecords(self):
-        OtherFrames.record_frame.show_record_table(self.screen, self.records)
+        Other_Frames.record_frame.show_record_table(self.screen, self.records)
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -201,6 +201,7 @@ class Alien_Invasion:
         if self.stats.game_active != True:
             self.play_button.draw_button()
             if self.stats.ships_count == 0:
+                Serializeble.saver.save_data(self.number, USERNAME)
                 back_music.stop()
                 ai = Alien_Invasion()
                 ai.run_game()
@@ -219,8 +220,11 @@ class Alien_Invasion:
     def _check_alien_and_bullet_collision(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True,
                                                 True)
+
         if collisions:
             self.number += 1
+        pygame.sprite.groupcollide(self.bunkers, self.aliens, False,
+                                   True)
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
@@ -228,6 +232,10 @@ class Alien_Invasion:
             self.mystery_ship = Models.mystery_ship.Mystery_Ship()
             self.mystery_ship = Models.mystery_ship.Mystery_Ship()
             self.all_sprites.add(self.mystery_ship)
+
+    def _check_alien_and_bunker_collision(self):
+        pygame.sprite.groupcollide(self.bunkers, self.aliens, True,
+                                   True)
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
@@ -258,7 +266,8 @@ class Alien_Invasion:
         self._check_aliens_bottom()
 
     def run_game(self):
-        user_name = OtherFrames.text_field_for_user_name.get_name()
+        user_name = Other_Frames.text_field_for_user_name.get_name()
+        USERNAME = user_name
         pygame.mixer.Channel(0).play(back_music)
 
         self._update_records()
