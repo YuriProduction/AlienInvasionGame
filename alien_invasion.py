@@ -2,7 +2,7 @@ import os.path
 import random
 
 import pygame
-
+from Models.bunker import Bunker
 import Models.Button_To_Record_Frame as recordsButton
 import Models.mystery_ship
 import OtherFrames.record_frame
@@ -36,11 +36,12 @@ class Alien_Invasion:
         self.ship = Ship()
         self.ship.initialize(self.screen)
         self.ship_height = 48
-
+        self.bunkers = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
 
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
+        self._create_bunkers()
 
         self.play_button = Button("Play", 200, 50)
         self.play_button.screen = self.screen
@@ -119,6 +120,23 @@ class Alien_Invasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
+    def _create_bunkers(self):
+        bunker_spacing = 200
+        num_bunkers = 3
+        bunker_start_x = (self.settings.screen_width - (num_bunkers * bunker_spacing)) // 2
+        bunker_y = self.settings.screen_height - 150
+        for i in range(num_bunkers):
+            bunker_x = bunker_start_x + (i * bunker_spacing)
+            bunker = Bunker(self.screen, bunker_x, bunker_y)
+            self.bunkers.add(bunker)
+
+    def _update_bunkers(self):
+        self.bunkers.update()
+
+    def _draw_bunkers(self):
+        self.bunkers.draw(self.screen)
+        pygame.display.flip()
 
     def _create_fleet(self):
         self.settings.fleet_drop_speed += 5
@@ -206,6 +224,7 @@ class Alien_Invasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self._create_bunkers()
             self.mystery_ship = Models.mystery_ship.Mystery_Ship()
             self.mystery_ship = Models.mystery_ship.Mystery_Ship()
             self.all_sprites.add(self.mystery_ship)
@@ -251,6 +270,7 @@ class Alien_Invasion:
                 self._update_bullets()
                 self._update_aliens()
                 self.all_sprites.draw(self.screen)
+                self._draw_bunkers()
                 pygame.display.flip()
             self._update_screen()
 
