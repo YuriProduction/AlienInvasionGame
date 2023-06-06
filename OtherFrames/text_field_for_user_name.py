@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from pygame.locals import QUIT, KEYDOWN, K_BACKSPACE
 
 
@@ -24,7 +24,7 @@ def get_name() -> str:
     while running:
         for event in pygame.event.get():
             if event.type == QUIT:
-                sys.exit(0)
+                exit(0)
             elif event.type == KEYDOWN:
                 if event.key == K_BACKSPACE:
 
@@ -33,7 +33,7 @@ def get_name() -> str:
 
                     input_text += event.unicode
             elif event.type == pygame.QUIT:
-                sys.exit(0)
+                exit(0)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()

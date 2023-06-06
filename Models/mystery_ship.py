@@ -2,7 +2,7 @@ import pygame, random, os
 from settings import Settings
 
 
-class MysteryShip(pygame.sprite.Sprite):
+class Mystery_Ship(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.settings = Settings()
@@ -14,7 +14,7 @@ class MysteryShip(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x += self.speed
-        self.rect.y += self.speed/2
+        self.rect.y += self.speed / 2
         if self.rect.right < 0:
             self.rect.x = self.settings.screen_width
             self.rect.y = random.randint(0, self.settings.screen_height - self.rect.height)

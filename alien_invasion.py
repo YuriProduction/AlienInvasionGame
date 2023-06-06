@@ -1,10 +1,10 @@
 import os.path
-import sys
+import random
 
 import pygame
-import random
+
 import Models.Button_To_Record_Frame as recordsButton
-import Models.MysteryShip
+import Models.mystery_ship
 import OtherFrames.record_frame
 import OtherFrames.text_field_for_user_name
 import Serializeble.loader
@@ -25,7 +25,7 @@ back_music = pygame.mixer.Sound(os.path.join('Music', 'Game.wav'))
 back_music.set_volume(0.15)
 
 
-class AlienInvasion:
+class Alien_Invasion:
     def _initialize_Settings_And_Screen(self):
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
@@ -49,7 +49,7 @@ class AlienInvasion:
         self.pause_button = PauseButton()
         self.records_button = recordsButton.RecordButton()
 
-        self.mystery_ship = Models.MysteryShip.MysteryShip()
+        self.mystery_ship = Models.mystery_ship.Mystery_Ship()
 
     def _initialize_statistics_and_Table(self):
         self.stats = GameStats()
@@ -75,7 +75,6 @@ class AlienInvasion:
 
             self.aliens.empty()
             self.bullets.empty()
-
             self._create_fleet()
             self.ship.rect.midbottom = self.screen_rect.midbottom
             self.ship.x = float(self.ship.rect.x)
@@ -94,7 +93,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            sys.exit(1)
+            exit(1)
         elif event.key == pygame.K_SPACE:
             pygame.mixer.Channel(1).play(pygame.mixer.Sound(os.path.join('Music', 'SHOOT.wav')))
             self._fire_bullet()
@@ -113,7 +112,7 @@ class AlienInvasion:
             self._showTheScreenOfRecords()
 
     def _showTheScreenOfRecords(self):
-        OtherFrames.RecordFrame.show_record_table(self.screen, self.records)
+        OtherFrames.record_frame.show_record_table(self.screen, self.records)
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -157,7 +156,7 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 if self.number != 0:
                     Serializeble.saver.save_data(self.number, username)
-                sys.exit(0)
+                exit(0)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -185,7 +184,7 @@ class AlienInvasion:
             self.play_button.draw_button()
             if self.stats.ships_count == 0:
                 back_music.stop()
-                ai = AlienInvasion()
+                ai = Alien_Invasion()
                 ai.run_game()
 
         else:
@@ -207,7 +206,8 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
-            self.mystery_ship = Models.MysteryShip.MysteryShip()
+            self.mystery_ship = Models.mystery_ship.Mystery_Ship()
+            self.mystery_ship = Models.mystery_ship.Mystery_Ship()
             self.all_sprites.add(self.mystery_ship)
 
     def _check_fleet_edges(self):
@@ -224,13 +224,14 @@ class AlienInvasion:
     def _update_aliens(self):
         self._check_fleet_edges()
         self.aliens.update(self.settings.fleet_direction)
-        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+        if pygame.sprite.spritecollideany(self.ship, self.aliens) or pygame.sprite.collide_rect(self.mystery_ship,
+                                                                                                self.ship):
             self._ship_hit()
+            self.number -= 10
 
-        hits = pygame.sprite.spritecollide(self.mystery_ship, self.bullets, True)
+        hits_bullets = pygame.sprite.spritecollide(self.mystery_ship, self.bullets, True)
 
-        if hits:
-            print('COLLIDE')
+        if hits_bullets:
             self.number += 5
             self.mystery_ship.rect.x = random.randint(0, self.settings.screen_width - self.mystery_ship.rect.width)
             self.mystery_ship.rect.y = -self.mystery_ship.rect.height
@@ -238,7 +239,7 @@ class AlienInvasion:
         self._check_aliens_bottom()
 
     def run_game(self):
-        user_name = OtherFrames.textFielfForUserName.get_name()
+        user_name = OtherFrames.text_field_for_user_name.get_name()
         pygame.mixer.Channel(0).play(back_music)
 
         self._update_records()
@@ -255,5 +256,5 @@ class AlienInvasion:
 
 
 if __name__ == '__main__':
-    ai = AlienInvasion()
+    ai = Alien_Invasion()
     ai.run_game()
