@@ -3,10 +3,10 @@ import sys
 
 import pygame
 import random
-import Models.ButtonToRecordFrame as recordsButton
+import Models.Button_To_Record_Frame as recordsButton
 import Models.MysteryShip
-import OtherFrames.RecordFrame
-import OtherFrames.textFielfForUserName
+import OtherFrames.record_frame
+import OtherFrames.text_field_for_user_name
 import Serializeble.loader
 import Serializeble.saver
 from Models.Pause import PauseButton

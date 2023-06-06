@@ -10,8 +10,8 @@ def show_record_table(screen, scores: list):
     size = (700, 500)
     pygame.display.set_caption("Таблица рекордов")
 
-    font_small = pygame.font.SysFont('Arial', 20)
-    font_large = pygame.font.SysFont('Arial', 40)
+    font_small = pygame.font.Font(None, 30)
+    font_large = pygame.font.Font(None, 40)
 
     done = False
     while not done:
