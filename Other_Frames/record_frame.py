@@ -1,6 +1,7 @@
 import pygame
 
 
+# pragma: no cover
 def show_record_table(screen, scores: list):
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)

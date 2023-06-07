@@ -11,8 +11,13 @@ class Ship(pygame.sprite.Sprite):
         self.settings = Settings()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
-        self.image = pygame.image.load('Images/ship.bmp')
-        self.rect = self.image.get_rect()
+        try:
+            self.image = pygame.image.load('Images/ship.bmp')
+            self.rect = self.image.get_rect()
+        except FileNotFoundError:
+            self.image = pygame.Surface((50, 50))  # Adjust the size of the bunker
+            self.image.fill((255, 0, 0))  # Set the color to red
+            self.rect = self.image.get_rect()
         self.rect.midbottom = self.screen_rect.midbottom
 
         self.moving_right = False

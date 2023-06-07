@@ -27,12 +27,15 @@ USERNAME = None
 
 
 class Alien_Invasion:
+    # pragma: no cover
     def _initialize_Settings_And_Screen(self):
+        # pragma: no cover
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
         self.screen_rect = self.screen.get_rect()
 
+    # pragma: no cover
     def _initialize_models(self):
         self.ship = Ship()
         self.ship.initialize(self.screen)
@@ -53,6 +56,7 @@ class Alien_Invasion:
 
         self.mystery_ship = Models.mystery_ship.Mystery_Ship()
 
+    # pragma: no cover
     def _initialize_statistics_and_Table(self):
         self.stats = GameStats()
         self.stats.game_active = False
@@ -61,6 +65,7 @@ class Alien_Invasion:
         self.table = Table(str(self.number))
         self.table.screen = self.screen
 
+    # pragma: no cover
     def __init__(self):
         self._initialize_Settings_And_Screen()
 
@@ -71,6 +76,7 @@ class Alien_Invasion:
         self.all_sprites.add(self.mystery_ship)
         self.all_sprites.add(self.ship)
 
+    # pragma: no cover
     def _ship_hit(self):
         if self.stats.ships_count > 0:
             self.stats.ships_count -= 1

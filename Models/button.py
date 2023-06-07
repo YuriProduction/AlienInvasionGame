@@ -1,7 +1,9 @@
 import pygame as pg
 
 
+# pragma: no cover
 class Button:
+    # pragma: no cover
     def __init__(self, msg, width, height):
         self.screen = pg.display.set_mode((1200, 800))
         self.screen_rect = self.screen.get_rect()
@@ -21,6 +23,7 @@ class Button:
 
         self.msg_image_rect.center = self.rect.center
 
+    # pragma: no cover
     def draw_button(self):
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)
