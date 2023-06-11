@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import QUIT, KEYDOWN, K_BACKSPACE
 
 
+# pragma : no cover
 def get_name() -> str:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)

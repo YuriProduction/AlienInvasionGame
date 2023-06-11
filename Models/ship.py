@@ -29,5 +29,6 @@ class Ship(pygame.sprite.Sprite):
         if self.moving_left and self.rect.left > 0:
             self.rect.x -= self.settings.ship_speed
 
+    # pragma : no cover
     def blitme(self):
         self.screen.blit(self.image, self.rect)

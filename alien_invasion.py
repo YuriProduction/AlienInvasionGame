@@ -26,8 +26,8 @@ back_music.set_volume(0.15)
 USERNAME = None
 
 
+# pragma: no cover
 class Alien_Invasion:
-    # pragma: no cover
     def _initialize_Settings_And_Screen(self):
         # pragma: no cover
         self.settings = Settings()

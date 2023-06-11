@@ -22,7 +22,3 @@ class Settings:
         self.table_button_color = (233, 233, 233)
         self.table_text_color = (0, 0, 0)
         self.table_font_size = 48
-
-
-if __name__ == '__main__':
-    print("Settings started in this window")

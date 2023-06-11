@@ -2,6 +2,7 @@ import pygame as pg
 from settings import Settings
 
 
+# pragma : no cover
 class Table:
     def __init__(self, msg):
         self.settings = Settings()

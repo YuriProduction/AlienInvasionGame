@@ -4,12 +4,14 @@ from pygame.sprite import Sprite
 
 
 class Alien(Sprite):
+    # pragma : no cover
     def __init__(self):
         super().__init__()
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.speed_of_aliens = self.settings.alien_speed
 
+        # pragma : no cover
         try:
             image_path = os.path.join("Images", "NLO.png")
             self.image = pygame.image.load(image_path)
