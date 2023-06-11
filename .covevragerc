@@ -1,0 +1,13 @@
+[report]
+exclude_lines =
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+    def draw_button
+    def draw_button(self, msg):
+    class Alien_Invasion:
+    try
+    if __name__ == .__main__.:
+
+ignore_errors = True
+
